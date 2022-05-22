@@ -121,16 +121,16 @@ QBCore.Commands.Add("grantlicense", Lang:t("commands.license_grant"), {{name = "
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if Player.PlayerData.job.name == "police" and Player.PlayerData.job.grade.level >= Config.LicenseRank then
-        if args[2] == "driver" or args[2] == "weapon" then
+        if args[2] == "driver" or args[2] == "weapon" or args[2] == "hunting" then
             local SearchedPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
             if not SearchedPlayer then return end
-            local licenseTable = SearchedPlayer.PlayerData.metadata["licences"]
+            local licenseTable = SearchedPlayer.PlayerData.metadata["licenses"]
             if licenseTable[args[2]] then
                 TriggerClientEvent('QBCore:Notify', src, Lang:t("error.license_already"), "error")
                 return
             end
             licenseTable[args[2]] = true
-            SearchedPlayer.Functions.SetMetaData("licences", licenseTable)
+            SearchedPlayer.Functions.SetMetaData("licenses", licenseTable)
             TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, Lang:t("success.granted_license"), "success")
             TriggerClientEvent('QBCore:Notify', src, Lang:t("success.grant_license"), "success")
         else
@@ -145,16 +145,16 @@ QBCore.Commands.Add("revokelicense", Lang:t("commands.license_revoke"), {{name =
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if Player.PlayerData.job.name == "police" and Player.PlayerData.job.grade.level >= Config.LicenseRank then
-        if args[2] == "driver" or args[2] == "weapon" then
+        if args[2] == "driver" or args[2] == "weapon" or args[2] == "hunting" then
             local SearchedPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
             if not SearchedPlayer then return end
-            local licenseTable = SearchedPlayer.PlayerData.metadata["licences"]
+            local licenseTable = SearchedPlayer.PlayerData.metadata["licenses"]
             if not licenseTable[args[2]] then
                 TriggerClientEvent('QBCore:Notify', src, Lang:t("error.error_license"), "error")
                 return
             end
             licenseTable[args[2]] = false
-            SearchedPlayer.Functions.SetMetaData("licences", licenseTable)
+            SearchedPlayer.Functions.SetMetaData("licenses", licenseTable)
             TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, Lang:t("error.revoked_license"), "error")
             TriggerClientEvent('QBCore:Notify', src, Lang:t("success.revoke_license"), "success")
         else
@@ -803,10 +803,10 @@ RegisterNetEvent('police:server:SeizeDriverLicense', function(playerId)
     local src = source
     local SearchedPlayer = QBCore.Functions.GetPlayer(playerId)
     if SearchedPlayer then
-        local driverLicense = SearchedPlayer.PlayerData.metadata["licences"]["driver"]
+        local driverLicense = SearchedPlayer.PlayerData.metadata["licenses"]["driver"]
         if driverLicense then
-            local licenses = {["driver"] = false, ["business"] = SearchedPlayer.PlayerData.metadata["licences"]["business"]}
-            SearchedPlayer.Functions.SetMetaData("licences", licenses)
+            local licenses = {["driver"] = false, ["business"] = SearchedPlayer.PlayerData.metadata["licenses"]["business"]}
+            SearchedPlayer.Functions.SetMetaData("licenses", licenses)
             TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, Lang:t("info.driving_license_confiscated"))
         else
             TriggerClientEvent('QBCore:Notify', src, Lang:t("error.no_driver_license"), 'error')
