@@ -20,6 +20,7 @@ client_scripts {
 	'client/job.lua',
 	'client/heli.lua',
 	--'client/anpr.lua',
+	'client/lawyer.lua'
 	'client/evidence.lua',
 	'client/objects.lua',
 	'client/tracker.lua'
